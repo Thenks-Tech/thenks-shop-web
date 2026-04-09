@@ -44,6 +44,7 @@ export const merchant = {
   audience:
     "Conscious travellers, luxury lodges, and boutique shops seeking design-led African gifting.",
   materialNote: "100% cotton textile line with safari-inspired embroidery.",
+  heroImage: null as string | null,
 };
 
 export const ilisahProducts: Product[] = [

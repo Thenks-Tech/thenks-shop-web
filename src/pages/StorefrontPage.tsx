@@ -40,13 +40,28 @@ export function StorefrontPage() {
   return (
     <div className="space-y-5">
       {/* Hero */}
-      <div className="rounded-2xl bg-secondary px-5 py-6 text-white">
-        <p className="text-xl font-bold leading-tight">
-          {merchant.tagline}
-        </p>
-        <p className="mt-2 text-sm leading-relaxed text-white/70">
-          {merchant.blurb}
-        </p>
+      <div className="relative overflow-hidden rounded-2xl bg-secondary">
+        {merchant.heroImage && (
+          <img
+            src={merchant.heroImage}
+            alt={merchant.name}
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+        )}
+        <div
+          className={
+            merchant.heroImage
+              ? "relative bg-gradient-to-t from-secondary/90 via-secondary/60 to-secondary/30 px-5 pb-6 pt-28"
+              : "px-5 py-6"
+          }
+        >
+          <p className="text-xl font-bold leading-tight text-white">
+            {merchant.tagline}
+          </p>
+          <p className="mt-2 text-sm leading-relaxed text-white/70">
+            {merchant.blurb}
+          </p>
+        </div>
       </div>
 
       {/* Search */}

@@ -103,6 +103,24 @@ Product data in `src/data/ilisahCatalog.ts` is transcribed from the ILISAH whole
 
 The hero image for the storefront is configured via `merchant.heroImage` in the catalog data. Set it to a URL or local path to display a banner image; when `null`, the hero falls back to a solid navy block with the tagline.
 
+## COM-2 commerce storefront (feature flag)
+
+When `VITE_FEATURE_COM2_STOREFRONT=true`, the app exposes the public COM-2 shopper flow against `thenks-backend` (`COM1_COMMERCE_STORES` + `COM2_COMMERCE_CHECKOUT` must be enabled server-side).
+
+| Route | Purpose |
+|-------|---------|
+| `/:entityThenksId/:storeSlug` | Store catalogue |
+| `/:entityThenksId/:storeSlug/product/:productId` | Product detail |
+| `/:entityThenksId/:storeSlug/cart` | Client cart (per store) |
+| `/:entityThenksId/:storeSlug/checkout` | Checkout, server totals, Stripe / M-PESA |
+| `/:entityThenksId/:storeSlug/orders/:orderId?token=…` | Order tracking |
+
+**Env vars:** `VITE_API_BASE_URL`, `VITE_STRIPE_PUBLISHABLE_KEY`, `VITE_FEATURE_COM2_STOREFRONT` (default off).
+
+**Public API base:** `/api/v1/commerce/public/entities/{entity_thenks_id}/stores/{store_slug}/` (store, products, checkout with `Idempotency-Key`) and `/api/v1/commerce/public/orders/{order_id}/?token=…`.
+
+Run tests: `npm test`.
+
 ## Current status
 
 ### Done (demo-ready)
@@ -116,12 +134,18 @@ The hero image for the storefront is configured via `merchant.heroImage` in the 
 - [x] Brand-aligned design (cream/orange/navy)
 - [x] Mobile-first layout, touch targets, scrollable category pills
 
+### COM-2 (behind `VITE_FEATURE_COM2_STOREFRONT`)
+
+- [x] Public store + products from commerce API
+- [x] Client cart with stock limits
+- [x] Server-priced checkout, idempotent retries, Stripe Payment Element, M-PESA polling via order status
+- [x] Order tracking with access token (+ optional email)
+
 ### Planned (post-demo / production)
 
 - [ ] Real product images (replace emoji placeholders)
-- [ ] Backend API integration (Django REST, PostgreSQL) — see `api-schemas/thenks-shop.yaml`
-- [ ] Server-side pricing, VAT, and promo validation — see `docs/features/thenks-shop-pricing-tax-spec.md`
-- [ ] Stripe checkout session + M-PESA STK push (real payments)
+- [ ] Legacy ILISAH demo retirement when all merchants use COM-2
+- [ ] Shipping address collection (COM-2.1)
 - [ ] Merchant auth via `app.thenks.co` handoff
 - [ ] Inventory tracking and order lifecycle
 - [ ] Multi-merchant support (currently single-tenant ILISAH demo)
